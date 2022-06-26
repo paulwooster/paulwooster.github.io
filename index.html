@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wooster Math Game</title>
+
+    <style>
+        table td:hover {
+            background:#999999;
+        }
+    </style>
+
+    <script>
+      
+      function clicked(value) {
+        if (answered == false){
+            
+            if (value == x * y) {
+                promptID.innerHTML = "Correct! " + x + " x " + y +" equals " + value;
+                updateScore(+1);
+                newQuestion();
+            } else {
+                promptID.innerHTML = "Sorry, " + x + " x " + y +" isn't " + value + ". Try again!";
+                updateScore(-2);
+            }
+            answered = true;
+            const myTimeout = setTimeout(resetPrompt,2500)
+        }
+      }
+
+      function resetPrompt() {  
+        promptID.innerHTML = "What does " + x + " x " + y + " equal?";
+        answered = false;
+      }
+
+      function updateScore(addPoints) {  
+        score += addPoints;
+        scoreID.innerHTML = score;
+      }
+      
+      function getNewRandomInt(min, max, old) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+
+        if (max <= min) return min;
+
+        let value = old;
+        while (value == old){
+            // The maximum is exclusive and the minimum is inclusive
+            value = Math.floor(Math.random() * (max - min) + min);
+        }
+
+        return value; 
+      }
+
+      function newQuestion() {
+        // 
+        if (repsLeft < 1) {
+            // we do some repetition of the number to improve
+            x = getNewRandomInt(0,9,x);
+            if (x > 1) {
+                repsLeft = 3;
+            }
+        } else {
+            repsLeft--;
+        }
+        y = getNewRandomInt(1,11,y);
+      }
+
+      let answered = false;
+      let x = 0, y = 0, repsLeft = 0;
+      let score = 0;
+
+      newQuestion();
+
+    </script>
+
+  </head>
+  <body>
+    <div style="text-align: center;">
+    <p><br/></p>
+    <table style="margin: 0 auto">
+        <thead>
+            <th>Score:</th>
+            <th id="score"></th>
+            <script>
+                let scoreID = document.getElementById('score');
+                updateScore(0);
+            </script>
+        </thead>
+    </table>
+    
+    <p><br/></p>
+    <p id="prompt" style="text-align: center;">Pick a number</p>
+    <script>
+        let promptID = document.getElementById('prompt');
+        resetPrompt()
+    </script>
+    <p><br/></p>
+    </div>
+
+    <div id="output" style="align:center"></div>
+    <script>
+        let table = document.createElement('table');
+        let thead = document.createElement('thead');
+        let tbody = document.createElement('tbody');
+        let trow = document.createElement('tr');
+        
+        table.style="margin: 0 auto"
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        
+        // Adding the entire table to the body tag
+        document.getElementById('output').appendChild(table);
+
+        for (let i = 0; i < 10; i++) {
+            let trow = document.createElement('tr');
+            tbody.appendChild(trow);
+            for (let j = 0; j < 11; j++) {
+                let tdata = document.createElement('td');
+                trow.appendChild(tdata);
+                tbutton = document.createElement('div');
+                let entry = i*10 + j
+                tbutton.innerHTML = entry;
+                if (entry % 5 == 0) tbutton.style="font-weight: bold";
+                tbutton.addEventListener("click", () => {clicked(entry)});
+                
+                tdata.style="text-align:center; border:1px solid; min-width:42px";
+                tdata.appendChild(tbutton);
+            }
+        }
+    </script>
+  </body>
+
+
+</html>
