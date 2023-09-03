@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello Console!</title>
+        <script type="application/javascript" src="console-log-html.js"></script>
+    </head>
+    <body>
+        <div>
+            <details>
+                <summary>console messages</summary>
+                <ul id="consoleContainer"></ul>
+            </details>
+        </div>
+
+        <script>
+            ConsoleLogHTML.connect(document.getElementById("consoleContainer"), "", "", "", true); // Redirect log messages
+        </script>
+
+        <script>
+            console.log("hello");
+            console.log(document.getElementById("consoleContainer"));
+            console.debug("debug")
+            console.error("oops")
+        </script>
+
+    </body>
+</html>
