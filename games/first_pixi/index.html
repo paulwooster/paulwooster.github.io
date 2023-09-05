@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>PixiJS Demo</title>
+        <link rel="stylesheet" href="index.css">
+        <script src="pixi.js"></script>
+    </header>
+    <body>
+        <script>
+            // Based on code from https://pixijs.com/guides/basics/getting-started
+
+            let app =  new PIXI.Application(window.innerWidth, window.innerHeight, {
+                // backgroundColor: 0xcccccc
+                transparent: true
+            });
+
+            document.body.appendChild(app.view);
+            app.renderer.resize(window.innerWidth, window.innerHeight);
+
+            // Magically load the PNG asynchronously
+            let sprite = PIXI.Sprite.from('../assets/terrain/terrain_roadCross_NE.png');
+
+            // Add the sprite 
+            app.stage.addChild(sprite);
+
+              // Add a variable to count up the seconds our demo has been running
+            let elapsed = 0.0;
+            // Tell our application's ticker to run a new callback every frame, passing
+            // in the amount of time that has passed since the last tick
+            app.ticker.add((delta) => {
+                // Add the time to our total elapsed time
+                elapsed += delta;
+                // Update the sprite's X position based on the cosine of our elapsed time.  We divide
+                // by 50 to slow the animation down a bit...
+                sprite.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
+            });
+
+            // Fullscreen in pixi is resizing the renderer to be window.innerWidth by window.innerHeight
+            window.addEventListener("resize", function() {
+                app.renderer.resize(window.innerWidth, window.innerHeight);
+            });
+        </script>
+    </body>
+</html>
