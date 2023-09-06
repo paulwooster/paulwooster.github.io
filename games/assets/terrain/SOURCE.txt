@@ -1,1 +1,20 @@
 From https://www.kenney.nl/assets/space-kit
+
+Total dimension of tile image is 512x512, most of this is blank
+in terms of areas with content:
+Top corner is at 256 x 283
+Bottom corner is at 256 x 348
+
+Right corner is at 321 x 315
+Left corner is at 192 x 315
+
+Averaged center is 256 x 315
+
+
+256 / 512 = 0.5
+315 / 512 = 0.615
+
+Can use these
+Height is 64
+Width is 128
+
