@@ -43,3 +43,83 @@ https://karnbianco.co.uk/blog/2018/04/10/tutorial-animated-spritesheets-with-gim
 
 https://github.com/Spydarlee/scripts/tree/master/GIMP
 
+
+w3schools uses codemirror for "try it" examples
+
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+// This is CodeMirror (http://codemirror.net), a code editor
+// implemented in JavaScript on top of the browser's DOM.
+//
+// You can find some technical background for some of the code below
+// at http://marijnhaverbeke.nl/blog/#cm-internals .
+
+
+
+Planetary game concepts:
+
+Resource acquisition, transport, processing
+
+Energy production, storage, allocation
+keep alive power, limp mode
+
+Power lines, power beaming, surface transport/transfer, remote depots
+
+mobile outposts
+mining and construction vehicles
+transport vehicles
+exploration vehicles
+
+terrain types, transit cost, barriers
+
+exploring / revealing tiles, finding resources
+
+
+potential objectives:
+ * area explored
+ * special markers discovered
+ * population, resources, other assets
+ * "monuments"
+ * return ships
+
+interplanetary trade
+
+local trade
+
+trade with other players
+
+multi-player
+
+
+compete against physics, nature, and time, rather than combat with other players
+
+equipment failures
+dust storms
+meteorites
+
+seasonal and diurnal energy production
+
+
+unit tasking / sequencing
+
+
+
+https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/offsetX
+
+<p>Move your mouse to see its position.</p>
+<canvas id="hello"> </canvas>
+<p id="screen-log"></p>
+
+
+let screenLog = document.querySelector("#screen-log");
+let hello = document.getElementById("hello")
+hello.addEventListener("pointermove", logKey);
+
+function logKey(e) {
+  screenLog.innerText = `
+    Screen X/Y: ${e.screenX}, ${e.screenY}
+    Client X/Y: ${e.clientX}, ${e.clientY}
+    Offset X/Y: ${e.offsetX}, ${e.offsetY}`;
+}
+

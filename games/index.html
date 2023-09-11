@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Mars Game</title>
+        <link rel="stylesheet" href="index.css">
+    </header>
+    <body>
+        <img id="terrain_roadCross_SW" src="assets/terrain/terrain_roadCross_SW.png" width="0" height="0"> 
+        <canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+const ax = 256, 
+      ay = 315,
+      hx = 64+2,
+      hy = 32+2;
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const img = document.getElementById("terrain_roadCross_SW");
+
+function draw(){
+    ctx.clearRect(0,0,500,500)
+    ctx.drawImage(img, 1*hx, -ay+1*hy);
+    ctx.drawImage(img, 0*hx, -ay+2*hy);
+    ctx.drawImage(img, 2*hx, -ay+2*hy);
+    ctx.drawImage(img, 1*hx, -ay+3*hy);
+    ctx.drawImage(img, mouseX-ax, mouseY-ay);
+    window.setInterval(draw,20);
+}
+
+document.addEventListener("load", draw);
+
+canvas.addEventListener("pointermove", logKey);
+
+window.setInterval(draw,1000);
+
+let mouseX, mouseY;
+
+function logKey(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+}
+
+
+</script>
+    </body>
+</html>

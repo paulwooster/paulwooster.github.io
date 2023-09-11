@@ -10,7 +10,6 @@ Left corner is at 192 x 315
 
 Averaged center is 256 x 315
 
-
 256 / 512 = 0.5
 315 / 512 = 0.615
 
