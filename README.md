@@ -123,3 +123,13 @@ function logKey(e) {
     Offset X/Y: ${e.offsetX}, ${e.offsetY}`;
 }
 
+
+https://github.com/IceCreamYou/MainLoop.js/blob/gh-pages/src/mainloop.js
+
+https://www.isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing
+
+https://github.com/ruby0x1/realtime-multiplayer-in-html5
+
+http://free-tex-packer.com/
+
+https://www.pixijselementals.com/#keyboard

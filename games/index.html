@@ -5,43 +5,98 @@
         <link rel="stylesheet" href="index.css">
     </header>
     <body>
+        <canvas id="canvas"></canvas>
+        hello<br>
+        there<br>
+        world<br>
         <img id="terrain_roadCross_SW" src="assets/terrain/terrain_roadCross_SW.png" width="0" height="0"> 
-        <canvas id="canvas" width="500" height="500"></canvas>
-
+        <img id="speederA" src="assets/spacekit/Isometric/craft_speederA_NE.png" width="0" height="0">
 <script>
-const ax = 256, 
-      ay = 315,
-      hx = 64+2,
-      hy = 32+2;
 
+// spacekit image coordinates
+const ax = 256; // center x
+const ay = 315; // center y 
+const hx = 64 + 2; // half width
+const hy = 32 + 2; // half height
+
+let windowWidth = window.innerWidth;
+let windowHeight = window.innerHeight;
+let canvasLeft = windowWidth / 4;
+let canvasTop = windowHeight / 4;
+let canvasWidth = windowWidth / 2;
+let canvasHeight = windowHeight / 2;
+
+// setup canvas
 const canvas = document.getElementById("canvas");
+canvas.style.position = 'absolute';
+canvas.style.left = `${canvasLeft}px`;
+canvas.style.top = `${canvasTop}px`;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 const ctx = canvas.getContext("2d");
-const img = document.getElementById("terrain_roadCross_SW");
 
-function draw(){
-    ctx.clearRect(0,0,500,500)
-    ctx.drawImage(img, 1*hx, -ay+1*hy);
-    ctx.drawImage(img, 0*hx, -ay+2*hy);
-    ctx.drawImage(img, 2*hx, -ay+2*hy);
-    ctx.drawImage(img, 1*hx, -ay+3*hy);
-    ctx.drawImage(img, mouseX-ax, mouseY-ay);
-    window.setInterval(draw,20);
+// setup images
+const terrain = document.getElementById("terrain_roadCross_SW");
+const speederA = document.getElementById("speederA");
+
+let moving = true;
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener("resize",resize);
+document.addEventListener("load", draw);
+canvas.addEventListener("pointermove", mouseMove);
+canvas.addEventListener("click", mouseClick);
+
+resize();
+
+function draw() {
+    // background
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, windowWidth, windowHeight);
+    
+    // terrain
+    for(let row = 1; row < 10; row++){
+        for(let col = 1; col < 5; col++){
+            ctx.drawImage(
+                terrain,
+                -ax + (2 * col + row % 2) * hx,
+                -ay + row * hy
+            );
+        }
+    }
+
+    // vehicle
+    ctx.drawImage(speederA, (mouseX-ax/4), (mouseY-ay/4), ax/2, ay/2);
 }
 
-document.addEventListener("load", draw);
+function resize() {
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
+    canvas.width = windowWidth / 2;
+    canvas.height = windowHeight / 2;
+    canvas.style.left = `${windowWidth / 4}px`;
+    canvas.style.top = `${windowHeight / 4}px`;
+    draw();
+}
 
-canvas.addEventListener("pointermove", logKey);
-
-window.setInterval(draw,1000);
-
-let mouseX, mouseY;
-
-function logKey(e) {
+function mouseMove(e) {
     mouseX = e.offsetX;
     mouseY = e.offsetY;
+    if (moving) {
+        draw();
+    }
 }
 
+function mouseClick(e) {
+    moving = !moving;
+    console.log("clicked");
+    console.log("moving:",moving);
+    if (moving) {
+        draw();
+    }
+}
 
 </script>
-    </body>
+</body>
 </html>
