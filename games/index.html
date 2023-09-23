@@ -6,9 +6,11 @@
     </header>
     <body>
         <canvas id="canvas"></canvas>
-        hello<br>
-        there<br>
-        world<br>
+        <button>hello</button>
+        <button>world</button>
+        <button>
+            <img id="speedButton" src="assets/spacekit/Isometric/craft_speederA_NE.png" style="width: 100px; height: 100px; object-fit: cover;">
+        </button>
         <img id="terrain_roadCross_SW" src="assets/terrain/terrain_roadCross_SW.png" width="0" height="0"> 
         <img id="speederA" src="assets/spacekit/Isometric/craft_speederA_NE.png" width="0" height="0">
 <script>
@@ -16,48 +18,52 @@
 // spacekit image coordinates
 const ax = 256; // center x
 const ay = 315; // center y 
-const hx = 64 + 2; // half width
-const hy = 32 + 2; // half height
+const hx = 64 + 1; // half width
+const hy = 32 + 1; // half height
 
-let windowWidth = window.innerWidth;
-let windowHeight = window.innerHeight;
-let canvasLeft = windowWidth / 4;
-let canvasTop = windowHeight / 4;
-let canvasWidth = windowWidth / 2;
-let canvasHeight = windowHeight / 2;
+// variables to track page layout
+let windowWidth;
+let windowHeight;
+let canvasLeft;
+let canvasTop;
+let canvasWidth;
+let canvasHeight;
+
+// setup side bar
+let leftBorder = 220;
+document.body.style.backgroundColor = "#5535F0";
+
+// variables to track mouse status
+let moving = true;
+let mouseX = 0;
+let mouseY = 0;
 
 // setup canvas
 const canvas = document.getElementById("canvas");
 canvas.style.position = 'absolute';
-canvas.style.left = `${canvasLeft}px`;
-canvas.style.top = `${canvasTop}px`;
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
 const ctx = canvas.getContext("2d");
 
 // setup images
 const terrain = document.getElementById("terrain_roadCross_SW");
 const speederA = document.getElementById("speederA");
 
-let moving = true;
-let mouseX = 0;
-let mouseY = 0;
-
+// create event listeners
 window.addEventListener("resize",resize);
 document.addEventListener("load", draw);
 canvas.addEventListener("pointermove", mouseMove);
 canvas.addEventListener("click", mouseClick);
 
+// start by resizing to current window parameters
 resize();
 
 function draw() {
     // background
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "black";
     ctx.fillRect(0, 0, windowWidth, windowHeight);
-    
+
     // terrain
     for(let row = 1; row < 10; row++){
-        for(let col = 1; col < 5; col++){
+        for(let col = -6; col < 7; col++){
             ctx.drawImage(
                 terrain,
                 -ax + (2 * col + row % 2) * hx,
@@ -73,10 +79,10 @@ function draw() {
 function resize() {
     windowWidth = window.innerWidth;
     windowHeight = window.innerHeight;
-    canvas.width = windowWidth / 2;
-    canvas.height = windowHeight / 2;
-    canvas.style.left = `${windowWidth / 4}px`;
-    canvas.style.top = `${windowHeight / 4}px`;
+    canvas.width = windowWidth - leftBorder;
+    canvas.height = windowHeight;
+    canvas.style.left = `${leftBorder}px`;
+    //canvas.style.top = `${0}px`;
     draw();
 }
 
