@@ -55,7 +55,7 @@ for(let i = 0; i < flatTerrain.length; i++){
     terrainImages[i] = terrainImg;
 }
 
-const terrainImg = terrainImages[4];
+//const terrainImg = terrainImages[4];
 const speederA = new Image();
 speederA.src = "./assets/spacekit/Isometric/craft_speederA_NE.png";
 
@@ -68,6 +68,15 @@ canvas.addEventListener("click", mouseClick);
 // start by resizing to current window parameters
 resize();
 
+let map;
+function generateMap(rows, cols) {
+    for(let row = 0; row < rows; row++){
+        for(let col = 0; col < cols; col++){
+
+        }
+    }
+}
+
 function draw() {
     // background
     ctx.fillStyle = "black";
@@ -78,7 +87,7 @@ function draw() {
     for(let row = 1; row < 10; row++){
         for(let col = -6; col < 7; col++){
             imgID = Math.floor(Math.random() * terrainImages.length);
-            imgID = row % terrainImages.length;
+            //imgID = row % terrainImages.length;
             ctx.drawImage(
                 terrainImages[imgID],
                 (-ax + (2 * col + row % 2) * hx) * scale,
