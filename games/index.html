@@ -1,152 +1,157 @@
 <!DOCTYPE html>
 <html>
-    <header>
-        <title>Mars Game</title>
-        <link rel="stylesheet" href="index.css">
-    </header>
-    <body>
-        <canvas id="canvas"></canvas>
-        <button id="btnZoomIn" onclick="zoomIn()">+</button>
-        <button id="btnZoomOut" onclick="zoomOut()">-</button><br>
-        <button id="btnLeft">&lArr;</button>
-        <button id="btnUp">&uArr;</button>
-        <button id="btnDown">&dArr;</button>
-        <button id="btnRight">&rArr;</button>
-<script src="./assets/terrain/tree.js"></script>
-<script>
+<header>
+  <title>Mars Game</title>
+  <link rel="stylesheet" href="index.css">
+</header>
 
-// spacekit image coordinates
-const ax = 256; // center x
-const ay = 315; // center y 
-const imgWidth = 512; // width of the image (much of this is blank)
-const imgHeight = 512; // height of the image (much of this is blank)
-const tileEdge = 2; // edge to apply around the tiles
-const hx = 64 + tileEdge; // half width of tile
-const hy = 32 + tileEdge; // half height of tile
+<body>
+  <canvas id="canvas"></canvas>
+  <button id="btnZoomIn" onclick="zoomIn()">+</button>
+  <button id="btnZoomOut" onclick="zoomOut()">-</button><br>
+  <button id="btnLeft">&lArr;</button>
+  <button id="btnUp">&uArr;</button>
+  <button id="btnDown">&dArr;</button>
+  <button id="btnRight">&rArr;</button>
+  <script src="./assets/terrain/tree.js"></script>
+  <script>
 
-// variables to track page layout
-let windowWidth;
-let windowHeight;
-let canvasLeft;
-let canvasTop;
-let canvasWidth;
-let canvasHeight;
-let scale = 1;
+    // spacekit image coordinates
+    const ax = 256; // center x
+    const ay = 315; // center y 
+    const imgWidth = 512; // width of the image (much of this is blank)
+    const imgHeight = 512; // height of the image (much of this is blank)
+    const tileEdge = 2; // edge to apply around the tiles
+    const hx = 64 + tileEdge; // half width of tile
+    const hy = 32 + tileEdge; // half height of tile
 
-// setup side bar
-let leftBorder = 220;
-document.body.style.backgroundColor = "#5535F0";
+    // variables to track page layout
+    let windowWidth;
+    let windowHeight;
+    let canvasLeft;
+    let canvasTop;
+    let canvasWidth;
+    let canvasHeight;
+    let scale = 1;
 
-// variables to track mouse status
-let moving = true;
-let mouseX = 0;
-let mouseY = 0;
+    // setup side bar
+    let leftBorder = 220;
+    document.body.style.backgroundColor = "#5535F0";
 
-// setup canvas
-const canvas = document.getElementById("canvas");
-canvas.style.position = 'absolute';
-const ctx = canvas.getContext("2d");
+    // variables to track mouse status
+    let moving = true;
+    let mouseX = 0;
+    let mouseY = 0;
 
-// setup images
-const terrainImages = [];
-for(let i = 0; i < flatTerrain.length; i++){
-    const terrainImg = new Image();
-    terrainImg.src = `assets/terrain/terrain${flatTerrain[i]}_SW.png`;
-    terrainImages[i] = terrainImg;
-}
+    // setup canvas
+    const canvas = document.getElementById("canvas");
+    canvas.style.position = 'absolute';
+    const ctx = canvas.getContext("2d");
 
-//const terrainImg = terrainImages[4];
-const speederA = new Image();
-speederA.src = "./assets/spacekit/Isometric/craft_speederA_NE.png";
-
-// create event listeners
-window.addEventListener("resize",resize);
-document.addEventListener("load", draw);
-canvas.addEventListener("pointermove", mouseMove);
-canvas.addEventListener("click", mouseClick);
-
-// start by resizing to current window parameters
-resize();
-
-let map;
-function generateMap(rows, cols) {
-    for(let row = 0; row < rows; row++){
-        for(let col = 0; col < cols; col++){
-
-        }
-    }
-}
-
-function draw() {
-    // background
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, windowWidth, windowHeight);
-
-    let imgID;
-    // terrain
-    for(let row = 1; row < 10; row++){
-        for(let col = -6; col < 7; col++){
-            imgID = Math.floor(Math.random() * terrainImages.length);
-            //imgID = row % terrainImages.length;
-            ctx.drawImage(
-                terrainImages[imgID],
-                (-ax + (2 * col + row % 2) * hx) * scale,
-                (-ay + row * hy) * scale,
-                imgWidth * scale,
-                imgHeight * scale,
-            );
-        }
+    // setup images
+    const terrainImages = [];
+    for (let i = 0; i < flatTerrain.length; i++) {
+      const terrainImg = new Image();
+      terrainImg.src = `assets/terrain/terrain${flatTerrain[i]}_SW.png`;
+      terrainImages[i] = terrainImg;
     }
 
-    // vehicle
-    ctx.drawImage(speederA, 
-        (mouseX - ax * scale / 4), 
-        (mouseY - ay * scale / 4), 
-        ax * scale / 2, 
+    let map = [];
+    generateMap(10, 10);
+
+    //const terrainImg = terrainImages[4];
+    const speederA = new Image();
+    speederA.src = "./assets/spacekit/Isometric/craft_speederA_NE.png";
+
+    // create event listeners
+    window.addEventListener("resize", resize);
+    document.addEventListener("load", draw);
+    canvas.addEventListener("pointermove", mouseMove);
+    canvas.addEventListener("click", mouseClick);
+
+    // start by resizing to current window parameters
+    resize();
+
+    function generateMap(rows, cols) {
+      for (let row = 0; row < rows; row++) {
+        map[row] = [];
+        for (let col = 0; col < cols; col++) {
+          map[row][col] = Math.floor(Math.random() * flatTerrain.length);
+        }
+      }
+    }
+
+    function draw() {
+      // background
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, windowWidth, windowHeight);
+
+      let imgID;
+      // terrain
+      for (let row = 1; row < 10; row++) {
+        for (let col = -6; col < 7; col++) {
+          imgID = map[row][col] ? map[row][col] : 0;
+          //imgID = row % terrainImages.length;
+          ctx.drawImage(
+            terrainImages[imgID],
+            (-ax + (2 * col + row % 2) * hx) * scale,
+            (-ay + row * hy) * scale,
+            imgWidth * scale,
+            imgHeight * scale,
+          );
+        }
+      }
+
+      // vehicle
+      ctx.drawImage(speederA,
+        (mouseX - ax * scale / 4),
+        (mouseY - ay * scale / 4),
+        ax * scale / 2,
         ay * scale / 2);
-}
+    }
 
-function resize() {
-    windowWidth = window.innerWidth;
-    windowHeight = window.innerHeight;
-    canvas.width = windowWidth - leftBorder;
-    canvas.height = windowHeight;
-    canvas.style.left = `${leftBorder}px`;
-    //canvas.style.top = `${0}px`;
-    draw();
-}
+    function resize() {
+      windowWidth = window.innerWidth;
+      windowHeight = window.innerHeight;
+      canvas.width = windowWidth - leftBorder;
+      canvas.height = windowHeight;
+      canvas.style.left = `${leftBorder}px`;
+      //canvas.style.top = `${0}px`;
+      draw();
+    }
 
-function mouseMove(e) {
-    if (moving) {
+    function mouseMove(e) {
+      if (moving) {
         mouseX = e.offsetX;
         mouseY = e.offsetY;
         draw();
+      }
     }
-}
 
-function mouseClick(e) {
-    moving = !moving;
-    if (moving) {
+    function mouseClick(e) {
+      moving = !moving;
+      if (moving) {
         mouseX = e.offsetX;
         mouseY = e.offsetY;
         draw();
+      }
     }
-}
 
-function zoomOut() {
-    if (scale > 0.5){
+    function zoomOut() {
+      if (scale > 0.5) {
         scale = scale - 0.25;
+      }
+      draw();
     }
-    draw();
-}
 
-function zoomIn() {
-    if (scale < 2){
+    function zoomIn() {
+      if (scale < 2) {
         scale = scale + 0.25;
+      }
+      draw();
     }
-    draw();
-}
 
-</script>
+  </script>
 </body>
+
 </html>
