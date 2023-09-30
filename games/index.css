@@ -5,3 +5,9 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
+
+button {
+    font-size: xx-large;
+    height: 40px;
+    width: 40px;
+}

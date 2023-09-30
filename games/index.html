@@ -6,13 +6,22 @@
 </header>
 
 <body>
+  <div id="sidebar">
+  <p>
+    &nbsp;<button id="btnZoomIn" onclick="zoomIn()">+</button>
+    <button id="btnUp" onclick="panUp()">&uarr;</button>
+    <button id="btnZoomOut" onclick="zoomOut()">-</button>
+    <br>
+    &nbsp;<button id="btnLeft" onclick="panLeft()">&larr;</button>
+    <button id="btnCenter">0</button>
+    <button id="btnRight" onclick="panRight()">&rarr;</button>
+    <br>
+    &nbsp;<button id="btnPrev">&lt;</button>
+    <button id="btnDown" onclick="panDown()">&darr;</button>
+    <button id="btnNext">&gt;</button>
+  </p>
+  </div>
   <canvas id="canvas"></canvas>
-  <button id="btnZoomIn" onclick="zoomIn()">+</button>
-  <button id="btnZoomOut" onclick="zoomOut()">-</button><br>
-  <button id="btnLeft">&lArr;</button>
-  <button id="btnUp">&uArr;</button>
-  <button id="btnDown">&dArr;</button>
-  <button id="btnRight">&rArr;</button>
   <script src="./assets/terrain/tree.js"></script>
   <script>
 
@@ -21,7 +30,7 @@
     const ay = 315; // center y 
     const imgWidth = 512; // width of the image (much of this is blank)
     const imgHeight = 512; // height of the image (much of this is blank)
-    const tileEdge = 2; // edge to apply around the tiles
+    const tileEdge = 0; // edge to apply around the tiles
     const hx = 64 + tileEdge; // half width of tile
     const hy = 32 + tileEdge; // half height of tile
 
@@ -32,10 +41,13 @@
     let canvasTop;
     let canvasWidth;
     let canvasHeight;
+    let offsetLeft = -300;
+    let offsetTop = 0;
     let scale = 1;
 
     // setup side bar
-    let leftBorder = 220;
+    let leftBorder = 142;
+    let topBorder = 0;
     document.body.style.backgroundColor = "#5535F0";
 
     // variables to track mouse status
@@ -57,7 +69,7 @@
     }
 
     let map = [];
-    generateMap(10, 10);
+    generateMap(15, 15);
 
     //const terrainImg = terrainImages[4];
     const speederA = new Image();
@@ -87,15 +99,19 @@
       ctx.fillRect(0, 0, windowWidth, windowHeight);
 
       let imgID;
-      // terrain
-      for (let row = 1; row < 10; row++) {
-        for (let col = -6; col < 7; col++) {
-          imgID = map[row][col] ? map[row][col] : 0;
-          //imgID = row % terrainImages.length;
+      let x;
+      let y;
+
+      for (let row = 0; row < map.length; row++) {
+        for (let col = 0; col < map[row].length; col++) {
+          imgID = map[row][col];
+
+          x = canvas.width/2 + offsetLeft + ((row - col + 1) * hx - ax) * scale;
+          y = offsetTop + ((col + row + 1) * hy - ay)* scale;
+
           ctx.drawImage(
             terrainImages[imgID],
-            (-ax + (2 * col + row % 2) * hx) * scale,
-            (-ay + row * hy) * scale,
+            x, y,
             imgWidth * scale,
             imgHeight * scale,
           );
@@ -104,8 +120,8 @@
 
       // vehicle
       ctx.drawImage(speederA,
-        (mouseX - ax * scale / 4),
-        (mouseY - ay * scale / 4),
+        offsetLeft + (mouseX - ax * scale / 4),
+        offsetTop + (mouseY - ay * scale / 4),
         ax * scale / 2,
         ay * scale / 2);
     }
@@ -114,16 +130,18 @@
       windowWidth = window.innerWidth;
       windowHeight = window.innerHeight;
       canvas.width = windowWidth - leftBorder;
-      canvas.height = windowHeight;
+      canvas.height = windowHeight - topBorder;
       canvas.style.left = `${leftBorder}px`;
-      //canvas.style.top = `${0}px`;
+      canvas.style.top = `${topBorder}px`;
       draw();
     }
 
+    let moveEvent;
     function mouseMove(e) {
+      moveEvent=e;
       if (moving) {
-        mouseX = e.offsetX;
-        mouseY = e.offsetY;
+        mouseX = e.offsetX- offsetLeft;
+        mouseY = e.offsetY- offsetTop;
         draw();
       }
     }
@@ -148,6 +166,30 @@
       if (scale < 2) {
         scale = scale + 0.25;
       }
+      draw();
+    }
+
+    function panLeft() {
+      console.log(offsetLeft);
+      console.log(canvas.width);
+      if (offsetLeft < canvas.width - hx * scale - 25) {
+        offsetLeft = offsetLeft + 25; 
+        draw();
+      }
+    }
+
+    function panRight() {
+      offsetLeft = offsetLeft - 25; 
+      draw();
+    }
+
+    function panUp() {
+      offsetTop = offsetTop + 25; 
+      draw();
+    }
+
+    function panDown() {
+      offsetTop = offsetTop - 25; 
       draw();
     }
 
