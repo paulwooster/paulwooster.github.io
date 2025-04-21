@@ -1,4 +1,4 @@
-This repo holds various web-based games and other projects.
+This repo holds various web-based games and other projects. Everything in here is a work in progress, mostly for trying out different approaches rather than being something that is likely to be useful to others. 
 
 Note, the files in this repo are generally licensed under MIT license (see LICENSE file) unless noted in the relevant folder.
 
