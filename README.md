@@ -1,5 +1,10 @@
 This repo holds various web-based games and other projects. Everything in here is a work in progress, mostly for trying out different approaches rather than being something that is likely to be useful to others. 
 
+This is supposed to be a markdown list:
+ * First item
+ * Second item
+ * Third item
+
 Note, the files in this repo are generally licensed under MIT license (see LICENSE file) unless noted in the relevant folder.
 
 Satellite dish favicon is CC-BY 4.0 from https://github.com/twitter/twemoji/blob/master/assets/svg/1f4e1.svg via https://favicon.io/emoji-favicons/satellite-antenna
